@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getUsers, deleteUser, addUser } from "../api/userApi";
 import "./users.css";
+import Input from "../reusable/Input";
 
 const Users = function() {
   // array destructuring
@@ -49,28 +50,20 @@ const Users = function() {
     <>
       <h1>Users</h1>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="name">Name</label>
-          <br />
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={user.name}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="role">Role</label>
-          <br />
-          <input
-            type="text"
-            id="role"
-            name="role"
-            value={user.role}
-            onChange={handleChange}
-          />
-        </div>
+        <Input
+          id="name"
+          label="Name"
+          name="name"
+          value={user.name}
+          onChange={handleChange}
+        />
+        <Input
+          id="role"
+          label="Role"
+          name="role"
+          value={user.role}
+          onChange={handleChange}
+        />
         <input
           type="submit"
           value="Save"
