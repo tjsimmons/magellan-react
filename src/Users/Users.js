@@ -7,12 +7,13 @@ const Users = function() {
   // array destructuring
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const [errors, setErrors] = useState({});
   const [user, setUser] = useState({
     id: null,
     name: "",
     role: ""
   });
-  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     getUsers()
@@ -27,6 +28,10 @@ const Users = function() {
   const handleSubmit = function(e) {
     e.preventDefault();
 
+    if (!isValid()) {
+      return;
+    }
+
     setIsSaving(true);
 
     addUser(user)
@@ -39,7 +44,27 @@ const Users = function() {
   };
 
   const handleChange = function({ target }) {
+    if (target.value) {
+      setErrors({ ...errors, [target.name]: null });
+    }
+
     setUser({ ...user, [target.name]: target.value });
+  };
+
+  const isValid = function() {
+    const _errors = {};
+
+    if (!user.name) {
+      _errors.name = "Name is required.";
+    }
+
+    if (!user.role) {
+      _errors.role = "Role is required.";
+    }
+
+    setErrors(_errors);
+
+    return Object.keys(_errors).length === 0;
   };
 
   if (isLoading) {
@@ -56,6 +81,7 @@ const Users = function() {
           name="name"
           value={user.name}
           onChange={handleChange}
+          error={errors.name}
         />
         <Input
           id="role"
@@ -63,6 +89,7 @@ const Users = function() {
           name="role"
           value={user.role}
           onChange={handleChange}
+          error={errors.role}
         />
         <input
           type="submit"
