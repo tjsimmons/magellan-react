@@ -1,10 +1,12 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
 const Nav = function() {
   return (
     <>
-      <a href="/">Home</a> | <a href="/users">Users</a>
-      <br />
+      <nav>
+        <NavLink to="/">Home</NavLink> | <NavLink to="/users">Users</NavLink>
+      </nav>
     </>
   );
 };

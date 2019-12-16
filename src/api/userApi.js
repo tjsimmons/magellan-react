@@ -21,7 +21,7 @@ export const deleteUser = function(id) {
 };
 
 export const addUser = function(user) {
-  return fetch(baseUrl, {
+  return fetch("foo", {
     method: "POST",
     body: JSON.stringify(user),
     headers: {

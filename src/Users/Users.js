@@ -1,19 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { getUsers, deleteUser, addUser } from "../api/userApi";
+import { getUsers, deleteUser } from "../api/userApi";
+import { Link } from "react-router-dom";
 import "./users.css";
-import Input from "../reusable/Input";
 
 const Users = function() {
   // array destructuring
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isSaving, setIsSaving] = useState(false);
-  const [errors, setErrors] = useState({});
-  const [user, setUser] = useState({
-    id: null,
-    name: "",
-    role: ""
-  });
 
   useEffect(() => {
     getUsers()
@@ -25,48 +18,6 @@ const Users = function() {
     deleteUser(id).then(() => setUsers(users.filter(u => u.id !== id)));
   };
 
-  const handleSubmit = function(e) {
-    e.preventDefault();
-
-    if (!isValid()) {
-      return;
-    }
-
-    setIsSaving(true);
-
-    addUser(user)
-      .then(savedUser => setUsers([...users, savedUser]))
-      .finally(() => {
-        setUser({ name: "", role: "" });
-
-        setIsSaving(false);
-      });
-  };
-
-  const handleChange = function({ target }) {
-    if (target.value) {
-      setErrors({ ...errors, [target.name]: null });
-    }
-
-    setUser({ ...user, [target.name]: target.value });
-  };
-
-  const isValid = function() {
-    const _errors = {};
-
-    if (!user.name) {
-      _errors.name = "Name is required.";
-    }
-
-    if (!user.role) {
-      _errors.role = "Role is required.";
-    }
-
-    setErrors(_errors);
-
-    return Object.keys(_errors).length === 0;
-  };
-
   if (isLoading) {
     return "Loading...";
   }
@@ -74,29 +25,8 @@ const Users = function() {
   return (
     <>
       <h1>Users</h1>
-      <form onSubmit={handleSubmit}>
-        <Input
-          id="name"
-          label="Name"
-          name="name"
-          value={user.name}
-          onChange={handleChange}
-          error={errors.name}
-        />
-        <Input
-          id="role"
-          label="Role"
-          name="role"
-          value={user.role}
-          onChange={handleChange}
-          error={errors.role}
-        />
-        <input
-          type="submit"
-          value="Save"
-          disabled={isSaving ? "disabled" : ""}
-        />
-      </form>
+      <Link to="/user">Add User</Link>
+      <br />
       <br />
       <table>
         <thead>

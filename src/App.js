@@ -3,6 +3,7 @@ import Users from "./Users";
 import Home from "./Home";
 import Nav from "./Nav";
 import { Route } from "react-router-dom";
+import ManageUser from "./Users/ManageUser";
 
 const App = function() {
   return (
@@ -13,6 +14,9 @@ const App = function() {
       </Route>
       <Route exact path="/users">
         <Users />
+      </Route>
+      <Route exact path="/user">
+        <ManageUser />
       </Route>
     </>
   );
