@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { getUsers, deleteUser } from "../api/userApi";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import "./users.css";
 
 const Users = props => {
+  // react router history hook
+  const history = useHistory();
   // array destructuring
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -46,7 +48,13 @@ const Users = props => {
             <tr key={u.id}>
               <td>
                 <button onClick={() => handleDeleteUser(u.id)}>Delete</button>
-                <button onClick={() => props.history.push(`/user/${u.id}`)}>
+                {/* using props provided by react router to push state onto the browser */}
+
+                {/* couple of ways to do react router redirects
+                 * location (url metadata)
+                 * history (programmatic redirects)
+                 * match (info on matched URL) */}
+                <button onClick={() => history.push(`/user/${u.id}`)}>
                   Edit
                 </button>
               </td>

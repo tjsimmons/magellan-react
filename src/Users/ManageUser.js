@@ -1,20 +1,31 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { useState } from "react";
-import { addUser } from "../api/userApi";
+import { useState, useEffect } from "react";
+import { saveUser, getUser } from "../api/userApi";
 import Input from "../reusable/Input";
-import { Link, Redirect } from "react-router-dom";
+import { Link, Redirect, useRouteMatch } from "react-router-dom";
 
 const ManageUser = ({ setSnackbar }) => {
   const [isSaving, setIsSaving] = useState(false);
   const [errors, setErrors] = useState({});
-
   const [saveCompleted, setSaveCompleted] = useState(false);
   const [user, setUser] = useState({
     id: null,
     name: "",
     role: ""
   });
+
+  // using routematch to pull stuff out of URL slugs
+  const match = useRouteMatch();
+  const { userId } = { ...match.params };
+
+  useEffect(() => {
+    if (userId) {
+      getUser(userId).then(user => {
+        setUser(user);
+      });
+    }
+  }, [userId]);
 
   const handleChange = ({ target }) => {
     if (target.value) {
@@ -33,7 +44,7 @@ const ManageUser = ({ setSnackbar }) => {
 
     setIsSaving(true);
 
-    addUser(user)
+    saveUser(user)
       .then(() => {
         setSaveCompleted(true);
         setSnackbar({ message: "User saved" });

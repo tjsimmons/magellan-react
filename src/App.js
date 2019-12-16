@@ -32,11 +32,14 @@ const App = () => {
       <Route exact path="/">
         <Home />
       </Route>
-      <Route
-        path="/users"
-        render={reactRouterProps => <Users {...reactRouterProps} />}
-      />
-      <Route path="/user">
+
+      <Route path="/users">
+        <Users />
+      </Route>
+
+      {/* :(variable)? lets you use RouteMatch to get info from the URL
+       * ? means it's optional */}
+      <Route path="/user/:userId?">
         <ManageUser setSnackbar={setSnackbar} />
       </Route>
     </>
