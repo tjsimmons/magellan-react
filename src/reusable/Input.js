@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const Input = function({ id, label, type, name, value, onChange, error }) {
+const Input = ({ id, label, type, name, value, onChange, error }) => {
   return (
     <div>
       <label htmlFor={id}>{label}</label>

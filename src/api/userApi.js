@@ -1,6 +1,6 @@
 const baseUrl = process.env.REACT_APP_USER_API_URL + "/users";
 
-export const getUsers = function() {
+export const getUsers = () => {
   return fetch(baseUrl).then(response => {
     if (response.ok) {
       return response.json();
@@ -10,7 +10,7 @@ export const getUsers = function() {
   });
 };
 
-export const deleteUser = function(id) {
+export const deleteUser = id => {
   return fetch(`${baseUrl}/${id}`, { method: "DELETE" }).then(response => {
     if (response.ok) {
       return response.json();
@@ -20,8 +20,8 @@ export const deleteUser = function(id) {
   });
 };
 
-export const addUser = function(user) {
-  return fetch("foo", {
+export const addUser = user => {
+  return fetch(baseUrl, {
     method: "POST",
     body: JSON.stringify(user),
     headers: {

@@ -1,14 +1,14 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { useState } from "react";
 import { addUser } from "../api/userApi";
 import Input from "../reusable/Input";
 import { Link, Redirect } from "react-router-dom";
-import { Snackbar } from "@material-ui/core";
 
-const ManageUser = function() {
+const ManageUser = ({ setSnackbar }) => {
   const [isSaving, setIsSaving] = useState(false);
   const [errors, setErrors] = useState({});
-  const [snackbar, setSnackbar] = useState(null);
+
   const [saveCompleted, setSaveCompleted] = useState(false);
   const [user, setUser] = useState({
     id: null,
@@ -16,7 +16,7 @@ const ManageUser = function() {
     role: ""
   });
 
-  const handleChange = function({ target }) {
+  const handleChange = ({ target }) => {
     if (target.value) {
       setErrors({ ...errors, [target.name]: null });
     }
@@ -24,7 +24,7 @@ const ManageUser = function() {
     setUser({ ...user, [target.name]: target.value });
   };
 
-  const handleSubmit = function(e) {
+  const handleSubmit = e => {
     e.preventDefault();
 
     if (!isValid()) {
@@ -36,15 +36,16 @@ const ManageUser = function() {
     addUser(user)
       .then(() => {
         setSaveCompleted(true);
+        setSnackbar({ message: "User saved" });
       })
       .catch(error => {
         console.error(error);
-        setSnackbar({ show: true, message: error.message });
+        setSnackbar({ message: error.message });
         setIsSaving(false);
       });
   };
 
-  const isValid = function() {
+  const isValid = () => {
     const _errors = {};
 
     if (!user.name) {
@@ -60,10 +61,6 @@ const ManageUser = function() {
     return Object.keys(_errors).length === 0;
   };
 
-  const closeSnackbar = function() {
-    setSnackbar(null);
-  };
-
   return (
     <>
       <h1>Add User</h1>
@@ -72,19 +69,6 @@ const ManageUser = function() {
       <br />
       <form onSubmit={handleSubmit}>
         {saveCompleted && <Redirect to="/users" />}
-        {snackbar && (
-          <Snackbar
-            message={snackbar.message}
-            open
-            autoHideDuration={6000}
-            onClose={closeSnackbar}
-            anchorOrigin={{
-              horizontal: "center",
-              vertical: "top"
-            }}
-            transitionDuration={500}
-          />
-        )}
         <Input
           id="name"
           label="Name"
@@ -109,6 +93,10 @@ const ManageUser = function() {
       </form>
     </>
   );
+};
+
+ManageUser.propTypes = {
+  setSnackbar: PropTypes.func.isRequired
 };
 
 export default ManageUser;

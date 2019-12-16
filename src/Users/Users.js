@@ -3,7 +3,7 @@ import { getUsers, deleteUser } from "../api/userApi";
 import { Link } from "react-router-dom";
 import "./users.css";
 
-const Users = function() {
+const Users = props => {
   // array destructuring
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -14,7 +14,7 @@ const Users = function() {
       .finally(() => setIsLoading(false));
   }, []); // second argument is a array of dependencies - empty array means only run once, not every time this is re-rendered
 
-  const handleDeleteUser = function(id) {
+  const handleDeleteUser = id => {
     deleteUser(id).then(() => setUsers(users.filter(u => u.id !== id)));
   };
 
@@ -46,6 +46,9 @@ const Users = function() {
             <tr key={u.id}>
               <td>
                 <button onClick={() => handleDeleteUser(u.id)}>Delete</button>
+                <button onClick={() => props.history.push(`/user/${u.id}`)}>
+                  Edit
+                </button>
               </td>
               <td>{u.name}</td>
               <td>{u.role}</td>
