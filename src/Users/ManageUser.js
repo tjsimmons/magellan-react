@@ -1,11 +1,12 @@
 import React from "react";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
-import { saveUser, getUser } from "../api/userApi";
 import Input from "../reusable/Input";
 import { Link, Redirect, useRouteMatch } from "react-router-dom";
+import * as userActions from "../redux/actions/userActions";
 
-const ManageUser = ({ setSnackbar }) => {
+const ManageUser = ({ setSnackbar, saveUser, loadUsers, users }) => {
   const [isSaving, setIsSaving] = useState(false);
   const [errors, setErrors] = useState({});
   const [saveCompleted, setSaveCompleted] = useState(false);
@@ -21,11 +22,13 @@ const ManageUser = ({ setSnackbar }) => {
 
   useEffect(() => {
     if (userId) {
-      getUser(userId).then(user => {
-        setUser(user);
-      });
+      if (users.length === 0) {
+        loadUsers();
+      } else {
+        setUser(users.find(u => u.id === Number(userId)));
+      }
     }
-  }, [userId]);
+  }, [loadUsers, userId, users, users.length]);
 
   const handleChange = ({ target }) => {
     if (target.value) {
@@ -110,4 +113,15 @@ ManageUser.propTypes = {
   setSnackbar: PropTypes.func.isRequired
 };
 
-export default ManageUser;
+// What Redux data should be injected on props in the component above?
+const mapStateToProps = state => {
+  return { users: state.users };
+};
+
+// What Redux actions should be injected on props in the component above?
+const mapDispatchToProps = {
+  saveUser: userActions.saveUser,
+  loadUsers: userActions.loadUsers
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ManageUser);

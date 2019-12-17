@@ -28,3 +28,18 @@ export const deleteUser = id => {
     return userApi.deleteUser(id).then(() => dispatch(deleteUserSuccess(id)));
   };
 };
+
+export const saveUserSuccess = user => {
+  return { type: "SAVE_USER_SUCCESS", user };
+};
+
+export const saveUser = user => {
+  return dispatch => {
+    return userApi.saveUser(user).then(() =>
+      dispatch({
+        type: user.id ? "EDIT_USER_SUCCESS" : "ADD_USER_SUCCESS",
+        user
+      })
+    );
+  };
+};
