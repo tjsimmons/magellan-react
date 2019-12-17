@@ -18,3 +18,13 @@ export const loadUsers = () => {
     return userApi.getUsers().then(users => dispatch(loadUsersSuccess(users)));
   };
 };
+
+export const deleteUserSuccess = id => {
+  return { type: "DELETE_USER_SUCCESS", id };
+};
+
+export const deleteUser = id => {
+  return dispatch => {
+    return userApi.deleteUser(id).then(() => dispatch(deleteUserSuccess(id)));
+  };
+};

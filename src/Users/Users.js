@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { deleteUser } from "../api/userApi";
+//import { deleteUser } from "../api/userApi";
 import { Link, useHistory } from "react-router-dom";
 import "./users.css";
 import * as userActions from "../redux/actions/userActions";
 
-const Users = ({ loadUsers, users }) => {
+const Users = ({ users, loadUsers, deleteUser }) => {
   // react router history hook
   const history = useHistory();
   // array destructuring
@@ -16,7 +16,7 @@ const Users = ({ loadUsers, users }) => {
   }, [loadUsers]); // second argument is a array of dependencies - empty array means only run once, not every time this is re-rendered
 
   const handleDeleteUser = id => {
-    //  deleteUser(id).then(() => setUsers(users.filter(u => u.id !== id)));
+    deleteUser(id);
   };
 
   if (isLoading) {
@@ -74,7 +74,8 @@ const mapStateToProps = state => {
 
 // What Redux actions should be injected on props in the component above?
 const mapDispatchToProps = {
-  loadUsers: userActions.loadUsers
+  loadUsers: userActions.loadUsers,
+  deleteUser: userActions.deleteUser
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Users);
