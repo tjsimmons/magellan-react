@@ -15,6 +15,6 @@ export const loadUsersSuccess = users => {
 // how i wrote it originally
 export const loadUsers = () => {
   return dispatch => {
-    return userApi.getUsers.then(users => loadUsersSuccess);
+    return userApi.getUsers().then(users => dispatch(loadUsersSuccess(users)));
   };
 };
